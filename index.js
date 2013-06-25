@@ -51,9 +51,16 @@ function process_stack (cb){
 }
 
 client.on("error", function (err) {
+    if (String(err).search('ECONNREFUSED') > 0){
+        console.log('connection refused')
+        client.end()
+    }
+    else
+        console.log('err code: '+err)
 });
 
 client.on('ready', function (status){
+
 })
 
 client.on('connect', function (status){
@@ -75,19 +82,3 @@ client.on("monitor", function (time, args) {
         })
     }
 })
-
-
-/*
-client.on("monitor", function (time, args) {
-    if (args[0] == 'rpush' && args[1] == 'test'){
-        client.llen(args[1], function (err,val){
-            console.log(args[1], val)
-            if (val > 0){
-            client.rpop(args[1], function (err,val){  console.log(err, val)          })
-        }
-    })
-    //console.log(args.length)
-}})
-
-*/
-//client.quit()
